@@ -69,4 +69,6 @@
     <string name="double_tap_to_sleep_title">Disable double tap to sleep</string>
     <string name="double_tap_to_sleep_summary">Disable in-game double tap at statusbar to sleep </string>
 
+    <string name="adb_disabled_summary">Temporary disable USB ADB debugging while in-game</string>
+    <string name="adb_disabled_title">Disable USB debugging</string>
 </resources>
