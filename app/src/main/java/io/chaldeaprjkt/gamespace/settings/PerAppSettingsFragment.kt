@@ -16,6 +16,7 @@
 package io.chaldeaprjkt.gamespace.settings
 
 import android.app.Activity
+import android.app.GameManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -72,21 +73,6 @@ class PerAppSettingsFragment : Hilt_PerAppSettingsFragment(),
             currentConfig?.mode?.let { value = it.toString() }
             onPreferenceChangeListener = this@PerAppSettingsFragment
         }
-        findPreference<SwitchPreferenceCompat>(PREF_USE_ANGLE)?.apply {
-            context.resources?.getBoolean(R.bool.config_allow_per_app_angle_usage)?.let {
-                isVisible = it
-                if (!it) return@apply
-            }
-
-            if (gameModeUtils.findAnglePackage()?.isEnabled != true) {
-                isEnabled = false
-                summary = context.getString(R.string.cant_find_angle_pkg)
-                return@apply
-            }
-            isChecked = gameModeUtils.isAngleUsed(currentGame?.packageName)
-            onPreferenceChangeListener = this@PerAppSettingsFragment
-
-        }
         findPreference<Preference>(PREF_UNREGISTER)?.apply {
             summary = context.getString(
                 R.string.per_app_unregister,
@@ -110,20 +96,12 @@ class PerAppSettingsFragment : Hilt_PerAppSettingsFragment(),
                 gameModeUtils.setGameModeFor(gameInfo.packageName, settings, newMode)
                 return true
             }
-            PREF_USE_ANGLE -> {
-                val newModes = GameConfig.ModeBuilder.apply {
-                    useAngle = newValue as Boolean
-                }.build()
-                gameModeUtils.setIntervention(gameInfo.packageName, newModes)
-                return true
-            }
         }
         return false
     }
 
     companion object {
         const val PREF_PREFERRED_MODE = "per_app_preferred_mode"
-        const val PREF_USE_ANGLE = "per_app_use_angle"
         const val PREF_UNREGISTER = "per_app_unregister"
     }
 }

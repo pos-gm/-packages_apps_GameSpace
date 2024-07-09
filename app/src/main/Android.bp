@@ -35,10 +35,7 @@ android_app {
         "dagger2-compiler",
     ],
 
-    required: [
-        "ANGLE",
-        "privapp_whitelist_io.chaldeaprjkt.gamespace.xml",
-    ],
+    required: ["privapp_whitelist_io.chaldeaprjkt.gamespace.xml"],
 }
 
 prebuilt_etc_xml {
