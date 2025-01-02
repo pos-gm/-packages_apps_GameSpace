@@ -61,10 +61,6 @@ class AppSettings @Inject constructor(private val context: Context) {
         get() = db.getString(KEY_RINGER_MODE, "0")?.toInt() ?: 0
         set(value) = db.edit().putString(KEY_RINGER_MODE, value.toString()).apply()
 
-    var edgeCutout
-        get() = db.getBoolean(KEY_EDGE_CUTOUT, false)
-        set(value) = db.edit().putBoolean(KEY_EDGE_CUTOUT, value).apply()
-
     var doubleTaptoSleep
         get() = db.getBoolean(KEY_DOUBLE_TAP_TO_SLEEP,true)
         set(value) = db.edit().putBoolean(KEY_DOUBLE_TAP_TO_SLEEP,value).apply()
@@ -75,7 +71,6 @@ class AppSettings @Inject constructor(private val context: Context) {
         const val KEY_3SCREENSHOT_DISABLE = "gamespace_tfgesture_disabled"
         const val KEY_STAY_AWAKE = "gamespace_stay_awake"
         const val KEY_RINGER_MODE = "gamespace_ringer_mode"
-        const val KEY_EDGE_CUTOUT = "gamespace_edge_cutout"
         const val KEY_DOUBLE_TAP_TO_SLEEP = "double_tap_sleep_gesture"
     }
 }

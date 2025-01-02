@@ -16,7 +16,6 @@
 package io.chaldeaprjkt.gamespace.settings
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -26,7 +25,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.chaldeaprjkt.gamespace.R
-import io.chaldeaprjkt.gamespace.data.AppSettings
 import io.chaldeaprjkt.gamespace.data.SystemSettings
 import io.chaldeaprjkt.gamespace.preferences.AppListPreferences
 import io.chaldeaprjkt.gamespace.preferences.appselector.AppSelectorActivity
@@ -77,21 +75,6 @@ class SettingsFragment : Hilt_SettingsFragment(), Preference.OnPreferenceChangeL
         findPreference<SwitchPreferenceCompat>(LMOSettings.System.GAMESPACE_SUPPRESS_FULLSCREEN_INTENT)?.apply {
             isChecked = settings.suppressFullscreenIntent
             onPreferenceChangeListener = this@SettingsFragment
-        }
-
-        findPreference<SwitchPreferenceCompat>(AppSettings.KEY_EDGE_CUTOUT)?.apply {
-            try {
-                context?.resources?.getString(com.android.internal.R.string.config_edge_cutout_overlay_package)?.let {
-                    context?.packageManager?.getPackageInfo(it, 0)
-                }
-                    ?.let {
-                        isVisible = true
-                    } ?: run {
-                        isVisible = false
-                    }
-            } catch (e: PackageManager.NameNotFoundException) {
-                isVisible = false
-            }
         }
     }
 

@@ -16,8 +16,6 @@
 package io.chaldeaprjkt.gamespace.data
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
 import io.chaldeaprjkt.gamespace.utils.GameModeUtils
@@ -31,9 +29,6 @@ class SystemSettings @Inject constructor(
 ) {
 
     private val resolver = context.contentResolver
-
-    private val handler = Handler(Looper.getMainLooper())
-    private var edgeCutoutRunnable: Runnable? = null
 
     var headsUp
         get() =
@@ -111,41 +106,6 @@ class SystemSettings @Inject constructor(
                 UserHandle.USER_CURRENT
             )
             gameModeUtils.setupBatteryMode(games.isNotEmpty())
-        }
-
-    var edgeCutout: Boolean
-        get() {
-            val value = Settings.Secure.getIntForUser(
-                resolver, LMOSettings.Secure.EDGE_CUTOUT, 0,
-                UserHandle.USER_CURRENT
-            ) == 1
-            // If the edge cutout last update is executed successfully
-            // then give the actual value.
-            // Otherwise return false.
-            // because we are updating setting with a delay.
-            // So it may read the setting value before updating.
-            // For example, closing and opening the game too quickly
-            // will make gamespace consider edge cutout enabled in device by
-            // default. In that case, it will enable the edge cutout system-wide
-            // instead of only for the game.
-            return edgeCutoutRunnable == null && value
-        }
-        set(value) {
-            // Cancel if there is any previous runnable is waiting
-            // to execute
-            if (edgeCutoutRunnable != null) {
-                handler.removeCallbacks(edgeCutoutRunnable!!)
-                edgeCutoutRunnable = null
-                return
-            }
-            edgeCutoutRunnable = Runnable {
-                Settings.Secure.putIntForUser(
-                    resolver, LMOSettings.Secure.EDGE_CUTOUT,
-                    value.toInt(), UserHandle.USER_CURRENT
-                )
-                edgeCutoutRunnable = null
-            }
-            handler.postDelayed(edgeCutoutRunnable!!, 1000)
         }
 
     var doubleTapToSleep
