@@ -19,10 +19,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -36,14 +34,10 @@ import javax.inject.Inject
 
 import com.libremobileos.providers.LMOSettings
 
-import vendor.lineage.fastcharge.V1_0.IFastCharge
-
 @AndroidEntryPoint(PreferenceFragmentCompat::class)
 class SettingsFragment : Hilt_SettingsFragment(), Preference.OnPreferenceChangeListener {
     @Inject
     lateinit var settings: SystemSettings
-
-    private val TAG = "GameSpaceSettingsFragment"
 
     private var apps: AppListPreferences? = null
 
@@ -96,37 +90,6 @@ class SettingsFragment : Hilt_SettingsFragment(), Preference.OnPreferenceChangeL
                         isVisible = false
                     }
             } catch (e: PackageManager.NameNotFoundException) {
-                isVisible = false
-            }
-        }
-
-        findPreference<SwitchPreferenceCompat>(AppSettings.KEY_FAST_CHARGE_ENABLER)?.apply {
-            setOnPreferenceChangeListener { preference, newValue ->
-                val isChecked = newValue as Boolean
-                if (isChecked) {
-                    AlertDialog.Builder(context)
-                        .setTitle(R.string.fast_charge_enabled_warning_title)
-                        .setMessage(R.string.fast_charge_enabled_warning_message)
-                        .setIcon(R.drawable.ic_battery_alert)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.fast_charge_enabled_warning_confirm) { _, _ ->
-                            // do nothing
-                        }
-                        .setNegativeButton(R.string.fast_charge_enabled_warning_cancel) { _, _ ->
-                            (preference as SwitchPreferenceCompat).isChecked = false
-                        }
-                        .show()
-                }
-                true
-            }
-            try {
-                val fastCharge = IFastCharge.getService()
-                isVisible = fastCharge != null
-                // consider disable if not supported by device.
-                // since we enable it by default, it avoids trying to
-                // set fastcharge state in unsupported devices.
-            } catch (e: Throwable) {
-                Log.e(TAG, "Failed to get IFastCharge service", e)
                 isVisible = false
             }
         }
