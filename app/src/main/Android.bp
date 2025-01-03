@@ -1,14 +1,14 @@
 android_app {
     name: "GameSpace",
+    defaults: [
+        "SettingsLibDefaults",
+    ],
     platform_apis: true,
     privileged: true,
     system_ext_specific: true,
     manifest: "AndroidManifest.xml",
     certificate: "platform",
-    resource_dirs: ["res"],
-    defaults: [
-        "SettingsLibDefaults",
-    ],
+
     srcs: [
         "java/**/*.java",
         "java/**/*.kt",
@@ -37,7 +37,7 @@ android_app {
 
     required: [
         "ANGLE",
-        "privapp_whitelist_io.chaldeaprjkt.gamespace.xml"
+        "privapp_whitelist_io.chaldeaprjkt.gamespace.xml",
     ],
 }
 
