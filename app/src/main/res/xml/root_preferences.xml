@@ -24,14 +24,6 @@
             android:summary="@string/heads_up_disabled_summary"
             android:title="@string/heads_up_disabled_title" />
 
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/ringer_mode_entries"
-            android:entryValues="@array/ringer_mode_values"
-            android:key="gamespace_ringer_mode"
-            android:summary="%s"
-            android:title="@string/ringer_mode_title" />
-
         <!-- persistent:false because it'll be stored to Settings.System directly -->
         <SwitchPreferenceCompat
             android:defaultValue="false"
@@ -69,6 +61,14 @@
             android:key="gamespace_adb_disabled"
             android:summary="@string/adb_disabled_summary"
             android:title="@string/adb_disabled_title" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/ringer_mode_entries"
+            android:entryValues="@array/ringer_mode_values"
+            android:key="gamespace_ringer_mode"
+            android:summary="%s"
+            android:title="@string/ringer_mode_title" />
 
     </PreferenceCategory>
 
